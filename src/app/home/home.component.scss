@@ -1,0 +1,240 @@
+$lightGrey: #dddddd;
+$darkGrey: #3f3f3f;
+
+.app {
+    position: relative;
+    width: 1000px;
+    height: 900px;
+    overflow-y: scroll;
+    margin: auto;
+    font-family: "Roboto";
+
+    .header{
+        display: flex;
+
+        .bars {
+            background-image: url(../../assets/svg/bars-solid.svg);
+            height: 24px;
+            width: 24px;
+            margin: 12px;
+            cursor: pointer;
+        }
+
+        .toggle {
+            display: flex;
+            margin: auto;
+            margin-top: 10px;
+            cursor: pointer;
+
+            .option {
+                padding: 5px 8px;
+                border: 1px solid $darkGrey;
+                
+                &.active {
+                    background-color: $lightGrey;
+                }
+            }
+        }
+
+    }
+
+    .body {
+
+        .tools {
+            position: absolute;
+            top: 60px;
+            left: 5px;
+            height: 400px;
+            width: 200px;
+            background-color: #fff;
+            box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+            z-index: 2;
+            transition: .5s left ease;
+
+            &.collapsed {
+                left: -160px;
+            }
+
+            .menu {
+                width: 100%;
+                display: flex;
+                font-size: 11px;
+                border-bottom: 1px solid $darkGrey;
+
+                .item {
+                    flex-grow: 1;
+                    text-align: center;
+                    padding: 5px 0;
+                    border-right: 1px solid $darkGrey;
+                    position: relative;
+                    cursor: pointer;
+
+                    &:last-child {
+                        border-right: none;
+                    }
+
+                    &.active {
+                        background-color: $lightGrey;
+
+                        &::after {
+                            content: "";
+                            position: absolute;
+                            top: calc(100% + 1px);
+                            left: calc(50% - 5px);
+                            width: 10px;
+                            height: 10px;
+                            background-color: $lightGrey;
+                            clip-path: polygon(50% 100%, 0 0, 100% 0);
+                        }
+                    }
+                }
+            }
+
+            .arrow {
+                position: absolute;
+                background-image: url(../../assets/svg/angle-left-solid.svg);
+                height: 20px;
+                width: 10px;
+                top: 375px;
+                left: 180px;
+                cursor: pointer;
+                transform: rotate(0deg);
+                transition: .25s transform ease;
+
+                &.collapsed {
+                    // background-image: url(../../assets/svg/angle-right-solid.svg);
+                    transform: rotate(180deg);
+                }
+            }
+
+            // Tools
+            .tool-wrapper {
+                height: 100%;
+                width: calc(100% - 20px);
+                position: relative;
+                padding: 10px;
+
+                .info {
+                    position: relative;
+                    font-size: 14px;
+                    margin-bottom: 25px;
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        top: calc(100% + 12px);
+                        left: calc(50% - 75px);
+                        width: 150px;
+                        height: 2px;
+                        background-color: $darkGrey;
+                    }
+                }
+
+                .item {
+                    position: relative;
+                    margin-bottom: 10px;
+                    
+                    .label-wrapper {
+                        display: flex;
+
+                        .label {
+                            margin-left: 20px;
+                        }
+
+                        input[type=text] {
+                            position: absolute;
+                            width: 40px;
+                            left: 80px;
+                        }
+
+                        input[type=checkbox] {
+                            position: absolute;
+                            top: 4px;
+                            left: 0px;
+                        }
+                    }
+
+                    input[type=range] {
+                        margin-top: 5px;
+                    }
+
+                }
+            }
+
+        }
+
+        .output {
+            position: absolute;
+            top: 60px;
+            left: calc(100% - 305px);
+            height: 300px;
+            width: 300px;
+            background-color: #fff;
+            box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+            z-index: 2;
+            transition: .5s left ease;
+
+            &.collapsed {
+                left: calc(100% - 40px);
+            }
+
+            .title {
+                margin-top: 5px;
+                text-align: center;
+            }
+
+            .row {
+                display: flex;
+                margin: 20px 15px 0 15px;
+                justify-content: space-between;
+                align-items: center;
+
+                div {
+                    width: 30px;
+                    font-size: 14px;
+                }
+
+                input {
+                    width: 30px;
+                }
+            }
+
+            .arrow {
+                position: absolute;
+                background-image: url(../../assets/svg/angle-right-solid.svg);
+                height: 20px;
+                width: 11px;
+                top: 270px;
+                left: 10px;
+                cursor: pointer;
+                transform: rotate(0deg);
+                transition: .25s transform ease;
+
+                &.collapsed {
+                    // background-image: url(../../assets/svg/angle-right-solid.svg);
+                    transform: rotate(180deg);
+                }
+            }
+        }
+
+        .canvas-holder {
+            width: 800px;
+            height: 800px;
+            position: absolute;
+            top: 60px;
+            left: 100px;
+            background-color: $darkGrey;
+            z-index: 1;
+        }
+
+    }
+
+    // Hide scroll bar
+    &::-webkit-scrollbar { 
+        display: none; 
+    }
+}
+
+.relative-wrapper {
+    position: relative;
+}

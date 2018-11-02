@@ -1,0 +1,104 @@
+<div class="app">
+  <div class="header">
+      <div class="bars"></div>
+      <div class="toggle">
+          <div (click)="toggle('viewState', 'standard')" [ngClass]="{'active': viewState === 'standard'}" class="option">Standard View</div>
+          <div (click)="toggle('viewState', 'comparison')" [ngClass]="{'active': viewState === 'comparison'}" class="option">Comparison View</div>
+      </div>
+  </div>
+  <div class="body">
+      <div [ngClass]="{'collapsed': !toolsExpanded}" class="tools">
+          <div class="relative-wrapper">
+
+                <!-- Top Menu -->
+                <div class="menu">
+                    <div [ngClass]="{'active': activeTool === 'hue'}" (click)="toggle('activeTool', 'hue')" class="item">Hue</div>
+                    <div [ngClass]="{'active': activeTool === 'sat'}" (click)="toggle('activeTool', 'sat')" class="item">Saturation</div>
+                    <div [ngClass]="{'active': activeTool === 'brt'}" (click)="toggle('activeTool', 'brt')" class="item">Brightness</div>
+                    <div [ngClass]="{'active': activeTool === 'con'}" (click)="toggle('activeTool', 'con')" class="item">Contrast</div>
+                </div>
+
+                <div class="tool-wrapper">
+
+                    <!-- Hue -->
+                    <ng-container *ngIf="activeTool === 'hue'">
+                        <div class="info">The hue tools changes the degree of the color. Change the master hue then fine-tune with the individual channels.</div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Master</div>
+                                <input [(ngModel)]="masterHue" type="text">
+                            </div>
+                            <input type="range" min="0" max="360" [(ngModel)]="masterHue">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Red</div>
+                                <input [(ngModel)]="redHue" type="text">
+                                <input [(ngModel)]="hueOverrides.redHue" type="checkbox">
+                            </div>
+                            <input type="range" min="0" max="360" [(ngModel)]="redHue">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Green</div>
+                                <input [(ngModel)]="greenHue" type="text">
+                                <input [(ngModel)]="hueOverrides.greenHue" type="checkbox">
+                            </div>
+                            <input type="range" min="0" max="360" [(ngModel)]="greenHue">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Blue</div>
+                                <input [(ngModel)]="blueHue" type="text">
+                                <input [(ngModel)]="hueOverrides.blueHue" type="checkbox">
+                            </div>
+                            <input type="range" min="0" max="360" [(ngModel)]="blueHue">
+                        </div>
+                    </ng-container>
+
+                </div>
+
+                <div (click)="toggle('toolsExpanded')" [ngClass]="{'collapsed': !toolsExpanded}" class="arrow"></div>
+            </div>
+      </div>
+      <div [ngClass]="{'collapsed': !outputExpanded}" class="output">
+          <div class="relative-wrapper">
+              <div class="title">Output</div>
+              <div class="row">
+                  <div class="label">Red</div>
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+              </div>
+              <div class="row">
+                  <div class="label">Green</div>
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+              </div>
+              <div class="row">
+                  <div class="label">Blue</div>
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+              </div>
+              <div class="row">
+                  <div class="label">Alpha</div>
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+                  <input type="text">
+              </div>
+              <div (click)="toggle('outputExpanded')" [ngClass]="{'collapsed': !outputExpanded}" class="arrow"></div>
+          </div>
+      </div>
+      <div class="canvas-holder"></div>
+  </div>
+</div>
