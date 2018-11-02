@@ -1,17 +1,25 @@
-import { Component, OnInit } from "@angular/core";
-import { MatrixService } from "../services/matrix.service";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatrixService } from '../services/matrix.service';
+
+declare var PIXI: any;
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.scss"]
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+  // Pixi
+  @ViewChild('pixiContainer')
+  pixiContainer;
+  public app: any;
+  public sprite;
+
   // Hue
-  private _masterHue: number = 0;
-  private _redHue: number = 0;
-  private _blueHue: number = 0;
-  private _greenHue: number = 0;
+  private _masterHue = 0;
+  private _redHue = 0;
+  private _blueHue = 0;
+  private _greenHue = 0;
 
   public hueOverrides = {
     redHue: false,
@@ -19,16 +27,36 @@ export class HomeComponent implements OnInit {
     greenHue: false
   };
 
-  public activeTool: string = "hue";
-  public viewState: string = "standard";
+  // Sat
+  private _masterSat = 0;
+  private _redSat = 0;
+  private _greenSat = 0;
+  private _blueSat = 0;
+
+  public satOverrides = {
+    redSat: false,
+    blueSat: false,
+    greenSat: false
+  };
+
+  public activeTool = 'hue';
+  public viewState = 'standard';
 
   // Expanding Vars
-  public toolsExpanded: boolean = true;
-  public outputExpanded: boolean = true;
+  public toolsExpanded = true;
+  public outputExpanded = true;
+  public sidenavState = false;
 
   constructor(public matrixService: MatrixService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.app = new PIXI.Application({
+      width: 800,
+      height: 800,
+      transparent: true
+    });
+    this.pixiContainer.nativeElement.appendChild(this.app.view);
+  }
 
   public toggle(attr: string, value?: any): void {
     if (value) {
@@ -36,6 +64,77 @@ export class HomeComponent implements OnInit {
     } else {
       this[attr] = !this[attr];
     }
+  }
+
+  // PIXI functions
+  private setupScene(e): void {
+    const loader = PIXI.loader;
+    const img = new Image();
+    img.src = e.target.result;
+
+    const baseTex = new PIXI.BaseTexture(img);
+    const tex = new PIXI.Texture(baseTex);
+    PIXI.Texture.addToCache(tex, 'sprite');
+
+    this.sprite = PIXI.Sprite.fromImage('sprite');
+    this.sprite.scale.set(0.5, 0.5);
+
+    this.app.stage.addChild(this.sprite);
+    this.startTicker();
+  }
+
+  private startTicker(): void {
+    this.app.ticker.add(d => {
+      const colorMatrix = new PIXI.filters.ColorMatrixFilter();
+      colorMatrix.matrix = this.matrixService.matrix;
+      this.sprite.filters = [colorMatrix];
+    });
+  }
+
+  private addOverlayImage(e): void {
+    const loader = PIXI.loader;
+    const img = new Image();
+    img.src = e.target.result;
+
+    const baseTex = new PIXI.BaseTexture(img);
+    const tex = new PIXI.Texture(baseTex);
+    PIXI.Texture.addToCache(tex, 'overlay');
+
+    const overlay = PIXI.Sprite.fromImage('overlay');
+    overlay.scale.set(0.5, 0.5);
+
+    this.app.stage.addChild(overlay);
+  }
+
+  // Sidebar Functions
+  public chooseSpriteImage(): void {
+    const element = document.getElementById('spriteInput');
+    element.click();
+    this.sidenavState = false;
+  }
+
+  public chooseSpriteImageListener(ev): void {
+    const reader = new FileReader();
+    reader.onload = e => {
+      console.log('loaded');
+      this.setupScene(e);
+    };
+    reader.readAsDataURL(ev.target.files[0]);
+  }
+
+  public chooseOverlayImage(): void {
+    const element = document.getElementById('overlayInput');
+    element.click();
+    this.sidenavState = false;
+  }
+
+  public chooseOverlayImageListener(ev): void {
+    const reader = new FileReader();
+    reader.onload = e => {
+      console.log('loaded');
+      this.addOverlayImage(e);
+    };
+    reader.readAsDataURL(ev.target.files[0]);
   }
 
   // Getters
@@ -55,6 +154,22 @@ export class HomeComponent implements OnInit {
     return this._blueHue;
   }
 
+  public get masterSat(): number {
+    return this._masterSat;
+  }
+
+  public get redSat(): number {
+    return this._masterSat;
+  }
+
+  public get greenSat(): number {
+    return this._masterSat;
+  }
+
+  public get blueSat(): number {
+    return this._masterSat;
+  }
+
   // Setters
   public set masterHue(value: number) {
     this._masterHue = value;
@@ -70,13 +185,40 @@ export class HomeComponent implements OnInit {
 
   public set redHue(value: number) {
     this._redHue = value;
+    this.matrixService.updateHue(this.redHue, this.greenHue, this.blueHue);
   }
 
   public set greenHue(value: number) {
     this._greenHue = value;
+    this.matrixService.updateHue(this.redHue, this.greenHue, this.blueHue);
   }
 
   public set blueHue(value: number) {
     this._blueHue = value;
+    this.matrixService.updateHue(this.redHue, this.greenHue, this.blueHue);
+  }
+
+  public set masterSat(value: number) {
+    this._masterSat = value;
+
+    Object.keys(this.satOverrides).forEach(key => {
+      if (!this.satOverrides[key]) {
+        this[key] = value;
+      }
+    });
+
+    this.matrixService.updateSat(this.redSat, this.greenSat, this.blueSat);
+  }
+
+  public set redSat(value: number) {
+    this._redSat = value;
+  }
+
+  public set greenSat(value: number) {
+    this._greenSat = value;
+  }
+
+  public set blueSat(value: number) {
+    this._blueSat = value;
   }
 }

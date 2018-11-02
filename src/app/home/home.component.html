@@ -1,14 +1,21 @@
 <div class="app">
-  <div class="header">
-      <div class="bars"></div>
-      <div class="toggle">
-          <div (click)="toggle('viewState', 'standard')" [ngClass]="{'active': viewState === 'standard'}" class="option">Standard View</div>
-          <div (click)="toggle('viewState', 'comparison')" [ngClass]="{'active': viewState === 'comparison'}" class="option">Comparison View</div>
-      </div>
-  </div>
-  <div class="body">
-      <div [ngClass]="{'collapsed': !toolsExpanded}" class="tools">
-          <div class="relative-wrapper">
+    <div [ngClass]="{'expand': sidenavState}" class="sidenav">
+        <div (click)="chooseSpriteImage()" class="item">Choose Sprite Image</div>
+        <div (click)="chooseOverlayImage()" class="item">Choose Overlay Image</div>
+        <div class="item">Choose Comparison Image</div>
+    </div>
+    <div class="header">
+        <div (click)="toggle('sidenavState')" class="bars"></div>
+        <div class="toggle">
+            <div (click)="toggle('viewState', 'standard')" [ngClass]="{'active': viewState === 'standard'}" class="option">Standard
+                View</div>
+            <div (click)="toggle('viewState', 'comparison')" [ngClass]="{'active': viewState === 'comparison'}" class="option">Comparison
+                View</div>
+        </div>
+    </div>
+    <div class="body">
+        <div [ngClass]="{'collapsed': !toolsExpanded}" class="tools">
+            <div class="relative-wrapper">
 
                 <!-- Top Menu -->
                 <div class="menu">
@@ -22,7 +29,8 @@
 
                     <!-- Hue -->
                     <ng-container *ngIf="activeTool === 'hue'">
-                        <div class="info">The hue tools changes the degree of the color. Change the master hue then fine-tune with the individual channels.</div>
+                        <div class="info">The hue tools changes the degree of the color. Change the master hue then
+                            fine-tune with the individual channels.</div>
                         <div class="item">
                             <div class="label-wrapper">
                                 <div class="label">Master</div>
@@ -56,49 +64,68 @@
                         </div>
                     </ng-container>
 
+                    <!-- Saturation -->
+                    <ng-container *ngIf="activeTool === 'sat'">
+                        <div class="info">The saturation tool changes the amount of a color.</div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Master</div>
+                                <input [(ngModel)]="masterSat" type="text">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="3" [(ngModel)]="masterSat">
+                        </div>
+                    </ng-container>
+
                 </div>
 
                 <div (click)="toggle('toolsExpanded')" [ngClass]="{'collapsed': !toolsExpanded}" class="arrow"></div>
             </div>
-      </div>
-      <div [ngClass]="{'collapsed': !outputExpanded}" class="output">
-          <div class="relative-wrapper">
-              <div class="title">Output</div>
-              <div class="row">
-                  <div class="label">Red</div>
-                  <input [value]="matrixService.matrix[0]" type="text">
-                  <input [value]="matrixService.matrix[1]" type="text">
-                  <input [value]="matrixService.matrix[2]" type="text">
-                  <input [value]="matrixService.matrix[3]" type="text">
-                  <input [value]="matrixService.matrix[4]" type="text">
-              </div>
-              <div class="row">
-                  <div class="label">Green</div>
-                  <input [value]="matrixService.matrix[5]" type="text">
-                  <input [value]="matrixService.matrix[6]" type="text">
-                  <input [value]="matrixService.matrix[7]" type="text">
-                  <input [value]="matrixService.matrix[8]" type="text">
-                  <input [value]="matrixService.matrix[9]" type="text">
-              </div>
-              <div class="row">
-                  <div class="label">Blue</div>
-                  <input [value]="matrixService.matrix[10]" type="text">
-                  <input [value]="matrixService.matrix[11]" type="text">
-                  <input [value]="matrixService.matrix[12]" type="text">
-                  <input [value]="matrixService.matrix[13]" type="text">
-                  <input [value]="matrixService.matrix[14]" type="text">
-              </div>
-              <div class="row">
-                  <div class="label">Alpha</div>
-                  <input [value]="matrixService.matrix[15]" type="text">
-                  <input [value]="matrixService.matrix[16]" type="text">
-                  <input [value]="matrixService.matrix[17]" type="text">
-                  <input [value]="matrixService.matrix[18]" type="text">
-                  <input [value]="matrixService.matrix[19]" type="text">
-              </div>
-              <div (click)="toggle('outputExpanded')" [ngClass]="{'collapsed': !outputExpanded}" class="arrow"></div>
-          </div>
-      </div>
-      <div class="canvas-holder"></div>
-  </div>
+        </div>
+        <div [ngClass]="{'collapsed': !outputExpanded}" class="output">
+            <div class="relative-wrapper">
+                <div class="title">Output</div>
+                <div class="row">
+                    <div class="label">Red</div>
+                    <input [value]="matrixService.matrix[0]" type="text">
+                    <input [value]="matrixService.matrix[1]" type="text">
+                    <input [value]="matrixService.matrix[2]" type="text">
+                    <input [value]="matrixService.matrix[3]" type="text">
+                    <input [value]="matrixService.matrix[4]" type="text">
+                </div>
+                <div class="row">
+                    <div class="label">Green</div>
+                    <input [value]="matrixService.matrix[5]" type="text">
+                    <input [value]="matrixService.matrix[6]" type="text">
+                    <input [value]="matrixService.matrix[7]" type="text">
+                    <input [value]="matrixService.matrix[8]" type="text">
+                    <input [value]="matrixService.matrix[9]" type="text">
+                </div>
+                <div class="row">
+                    <div class="label">Blue</div>
+                    <input [value]="matrixService.matrix[10]" type="text">
+                    <input [value]="matrixService.matrix[11]" type="text">
+                    <input [value]="matrixService.matrix[12]" type="text">
+                    <input [value]="matrixService.matrix[13]" type="text">
+                    <input [value]="matrixService.matrix[14]" type="text">
+                </div>
+                <div class="row">
+                    <div class="label">Alpha</div>
+                    <input [value]="matrixService.matrix[15]" type="text">
+                    <input [value]="matrixService.matrix[16]" type="text">
+                    <input [value]="matrixService.matrix[17]" type="text">
+                    <input [value]="matrixService.matrix[18]" type="text">
+                    <input [value]="matrixService.matrix[19]" type="text">
+                </div>
+                <div (click)="toggle('outputExpanded')" [ngClass]="{'collapsed': !outputExpanded}" class="arrow"></div>
+            </div>
+        </div>
+        <div class="canvas-holder">
+            <div #pixiContainer></div>
+        </div>
+    </div>
+</div>
+
+<div class="hidden">
+    <input id="spriteInput" (change)="chooseSpriteImageListener($event)" type="file">
+    <input id="overlayInput" (change)="chooseOverlayImageListener($event)" type="file">
 </div>
