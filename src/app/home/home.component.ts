@@ -58,26 +58,46 @@ export class HomeComponent implements OnInit {
     this.pixiContainer.nativeElement.appendChild(this.app.view);
 
     // Initalize the matrix
-    this.matrixService.init({ red: 0, green: 0, blue: 0 }, {}, {}, {});
+    this.matrixService.init(
+      { red: 0, green: 0, blue: 0 },
+      { red: 0, green: 0, blue: 0 },
+      {},
+      {}
+    );
 
     // Interval to update matrix
     setInterval(() => {
-      console.log("tick");
-      this.matrixService.updateHue({red: this._redHue, green: this._greenHue, blue: this._blueHue});
+      console.log('tick');
+      this.matrixService.updateHue({
+        red: this._redHue,
+        green: this._greenHue,
+        blue: this._blueHue
+      });
+      this.matrixService.updateSat({
+        red: this._redSat,
+        green: this._greenSat,
+        blue: this._blueSat
+      });
       console.log(this.matrixService.matrix);
-    }, 25);
+    }, 100);
 
     // DEV
-    setTimeout(() => {
-      this._redHue = 180;
-      this._greenHue = 180;
-      this._blueHue = 180;
-    }, 250);
-    setTimeout(() => {
-      this._redHue = 0;
-      this._greenHue = 0;
-      this._blueHue = 0;
-    }, 1000);
+    // setTimeout(() => {
+    //   // Hue
+    //   //   this._redHue = 180;
+    //   //   this._greenHue = 180;
+    //   //   this._blueHue = 180;
+    //   // Sat
+    //   this._redSat = 2;
+    // }, 250);
+    // setTimeout(() => {
+    //   // Hue
+    //   //   this._redHue = 0;
+    //   //   this._greenHue = 0;
+    //   //   this._blueHue = 0;
+    //   // Sat
+    //   this._redSat = 0;
+    // }, 1000);
   }
 
   public toggle(attr: string, value?: any): void {
@@ -181,15 +201,15 @@ export class HomeComponent implements OnInit {
   }
 
   public get redSat(): number {
-    return this._masterSat;
+    return this._redSat;
   }
 
   public get greenSat(): number {
-    return this._masterSat;
+    return this._greenSat;
   }
 
   public get blueSat(): number {
-    return this._masterSat;
+    return this._blueSat;
   }
 
   // Setters

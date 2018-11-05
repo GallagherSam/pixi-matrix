@@ -66,7 +66,44 @@
 
                     <!-- Saturation -->
                     <ng-container *ngIf="activeTool === 'sat'">
-                        <div class="info">The saturation tool changes the amount of a color.</div>
+                        <div class="info">The saturation tool changes the amount of a color. Use fine adjustments.</div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Master</div>
+                                <input [(ngModel)]="masterSat" type="text">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="3" [(ngModel)]="masterSat">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Red</div>
+                                <input [(ngModel)]="redSat" type="text">
+                                <input [(ngModel)]="satOverrides.redSat" type="checkbox">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="3" [(ngModel)]="redSat">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Green</div>
+                                <input [(ngModel)]="greenSat" type="text">
+                                <input [(ngModel)]="satOverrides.greenSat" type="checkbox">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="3" [(ngModel)]="greenSat">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Blue</div>
+                                <input [(ngModel)]="blueSat" type="text">
+                                <input [(ngModel)]="satOverrides.blueSat" type="checkbox">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="3" [(ngModel)]="blueSat">
+                        </div>
+                    </ng-container>
+
+                    <!-- Brightness -->
+                    <ng-container *ngIf="activeTool === 'brt'">
+                        <div class="info">The brightness tool changes the luminance values of a color. Use fine
+                            adjustments.</div>
                         <div class="item">
                             <div class="label-wrapper">
                                 <div class="label">Master</div>

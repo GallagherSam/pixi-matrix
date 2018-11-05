@@ -1,6 +1,6 @@
 export enum IProp {
-    HUE,
-    SAT,
-    BRT,
-    CON
+  HUE,
+  SAT,
+  BRT,
+  CON
 }
