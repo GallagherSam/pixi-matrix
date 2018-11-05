@@ -39,6 +39,30 @@ export class HomeComponent implements OnInit {
     greenSat: false
   };
 
+  // Brt
+  private _masterBrt = 1;
+  private _redBrt = 1;
+  private _greenBrt = 1;
+  private _blueBrt = 1;
+
+  public brtOverrides = {
+    redBrt: false,
+    greenBrt: false,
+    blueBrt: false
+  };
+
+  // Con
+  private _masterCon = 0;
+  private _redCon = 0;
+  private _greenCon = 0;
+  private _blueCon = 0;
+
+  public conOverrides = {
+    redCon: false,
+    greenCon: false,
+    blueCon: false
+  };
+
   public activeTool = 'hue';
   public viewState = 'standard';
 
@@ -61,8 +85,8 @@ export class HomeComponent implements OnInit {
     this.matrixService.init(
       { red: 0, green: 0, blue: 0 },
       { red: 0, green: 0, blue: 0 },
-      {},
-      {}
+      { red: 0, green: 0, blue: 0 },
+      { red: 0, green: 0, blue: 0 }
     );
 
     // Interval to update matrix
@@ -78,26 +102,18 @@ export class HomeComponent implements OnInit {
         green: this._greenSat,
         blue: this._blueSat
       });
+      this.matrixService.updateBrt({
+        red: this._redBrt,
+        green: this._greenBrt,
+        blue: this._blueBrt
+      });
+      this.matrixService.updateCon({
+        red: this._redCon,
+        green: this._greenCon,
+        blue: this._blueCon
+      });
       console.log(this.matrixService.matrix);
     }, 100);
-
-    // DEV
-    // setTimeout(() => {
-    //   // Hue
-    //   //   this._redHue = 180;
-    //   //   this._greenHue = 180;
-    //   //   this._blueHue = 180;
-    //   // Sat
-    //   this._redSat = 2;
-    // }, 250);
-    // setTimeout(() => {
-    //   // Hue
-    //   //   this._redHue = 0;
-    //   //   this._greenHue = 0;
-    //   //   this._blueHue = 0;
-    //   // Sat
-    //   this._redSat = 0;
-    // }, 1000);
   }
 
   public toggle(attr: string, value?: any): void {
@@ -212,6 +228,38 @@ export class HomeComponent implements OnInit {
     return this._blueSat;
   }
 
+  public get masterBrt(): number {
+    return this._masterBrt;
+  }
+
+  public get redBrt(): number {
+    return this._redBrt;
+  }
+
+  public get greenBrt(): number {
+    return this._greenBrt;
+  }
+
+  public get blueBrt(): number {
+    return this._blueBrt;
+  }
+
+  public get masterCon(): number {
+    return this._masterCon;
+  }
+
+  public get redCon(): number {
+    return this._redCon;
+  }
+
+  public get greenCon(): number {
+    return this._greenCon;
+  }
+
+  public get blueCon(): number {
+    return this._blueCon;
+  }
+
   // Setters
   public set masterHue(value: number) {
     this._masterHue = value;
@@ -255,5 +303,49 @@ export class HomeComponent implements OnInit {
 
   public set blueSat(value: number) {
     this._blueSat = value;
+  }
+
+  public set masterBrt(value: number) {
+    this._masterBrt = value;
+
+    Object.keys(this.brtOverrides).forEach(key => {
+      if (!this.brtOverrides[key]) {
+        this[key] = value;
+      }
+    });
+  }
+
+  public set redBrt(value: number) {
+    this._redBrt = value;
+  }
+
+  public set greenBrt(value: number) {
+    this._greenBrt = value;
+  }
+
+  public set blueBrt(value: number) {
+    this._blueBrt = value;
+  }
+
+  public set masterCon(value: number) {
+    this._masterCon = value;
+
+    Object.keys(this.conOverrides).forEach(key => {
+      if (!this.conOverrides[key]) {
+        this[key] = value;
+      }
+    });
+  }
+
+  public set redCon(value: number) {
+    this._redCon = value;
+  }
+
+  public set greenCon(value: number) {
+    this._greenCon = value;
+  }
+
+  public set blueCon(value: number) {
+    this._blueCon = value;
   }
 }

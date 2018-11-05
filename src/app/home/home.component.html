@@ -107,9 +107,70 @@
                         <div class="item">
                             <div class="label-wrapper">
                                 <div class="label">Master</div>
-                                <input [(ngModel)]="masterSat" type="text">
+                                <input [(ngModel)]="masterBrt" type="text">
                             </div>
-                            <input type="range" step="0.01" min="-3" max="3" [(ngModel)]="masterSat">
+                            <input type="range" step="0.01" min="-3" max="4" [(ngModel)]="masterBrt">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Red</div>
+                                <input [(ngModel)]="redBrt" type="text">
+                                <input [(ngModel)]="brtOverrides.redBrt" type="checkbox">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="4" [(ngModel)]="redBrt">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Green</div>
+                                <input [(ngModel)]="greenBrt" type="text">
+                                <input [(ngModel)]="brtOverrides.greenBrt" type="checkbox">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="4" [(ngModel)]="greenBrt">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Blue</div>
+                                <input [(ngModel)]="blueBrt" type="text">
+                                <input [(ngModel)]="brtOverrides.blueBrt" type="checkbox">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="4" [(ngModel)]="blueBrt">
+                        </div>
+                    </ng-container>
+
+                    <!-- Contrast -->
+                    <ng-container *ngIf="activeTool === 'con'">
+                        <div class="info">The contrast tool changes the distance between light and dark values. Use
+                            fine adjustments.</div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Master</div>
+                                <input [(ngModel)]="masterCon" type="text">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="3" [(ngModel)]="masterCon">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Red</div>
+                                <input [(ngModel)]="redCon" type="text">
+                                <input [(ngModel)]="conOverrides.redCon" type="checkbox">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="3" [(ngModel)]="redCon">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Green</div>
+                                <input [(ngModel)]="greenCon" type="text">
+                                <input [(ngModel)]="conOverrides.greenCon" type="checkbox">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="3" [(ngModel)]="greenCon">
+                        </div>
+                        <div class="item">
+                            <div class="label-wrapper">
+                                <div class="label">Blue</div>
+                                <input [(ngModel)]="blueCon" type="text">
+                                <input [(ngModel)]="conOverrides.blueCon" type="checkbox">
+                            </div>
+                            <input type="range" step="0.01" min="-3" max="3" [(ngModel)]="blueCon">
                         </div>
                     </ng-container>
 

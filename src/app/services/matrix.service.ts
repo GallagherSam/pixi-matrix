@@ -83,6 +83,52 @@ export class MatrixService {
     0
   ];
 
+  private _brtMatrix: number[] = [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+  ];
+
+  private _conMatrix: number[] = [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0
+  ];
+
   constructor(private mem: MemoryService) {
     this.mem.events.subscribe((event: MemoryMessage) => {
       console.log(event);
@@ -102,6 +148,22 @@ export class MatrixService {
           this.updateSatGreen(this.mem.sat);
         } else if (event.color === IColors.BLUE) {
           this.updateSatBlue(this.mem.sat);
+        }
+      } else if (event.prop === IProp.BRT) {
+        if (event.color === IColors.RED) {
+          this.updateBrtRed(this.mem.brt);
+        } else if (event.color === IColors.GREEN) {
+          this.updateBrtGreen(this.mem.brt);
+        } else if (event.color === IColors.BLUE) {
+          this.updateBrtBlue(this.mem.brt);
+        }
+      } else if (event.prop === IProp.CON) {
+        if (event.color === IColors.RED) {
+          this.updateConRed(this.mem.con);
+        } else if (event.color === IColors.GREEN) {
+          this.updateConGreen(this.mem.con);
+        } else if (event.color === IColors.BLUE) {
+          this.updateConBlue(this.mem.con);
         }
       }
     });
@@ -264,15 +326,110 @@ export class MatrixService {
     this._satMatrix[12] = x;
   }
 
+  // Brt
+
+  public updateBrt(brt: Colors): void {
+    this.mem.compareBrt(brt);
+  }
+
+  private updateBrtRed(brt: Colors): void {
+    const nullify = index => {
+      this.matrix[index] -= this._brtMatrix[index];
+    };
+
+    nullify(0);
+    this.matrix[0] += brt.red;
+    this._brtMatrix[0] = brt.red;
+  }
+
+  private updateBrtGreen(brt: Colors): void {
+    const nullify = index => {
+      this.matrix[index] -= this._brtMatrix[index];
+    };
+
+    nullify(6);
+    this.matrix[6] += brt.green;
+    this._brtMatrix[6] = brt.green;
+  }
+
+  private updateBrtBlue(brt: Colors): void {
+    const nullify = index => {
+      this.matrix[index] -= this._brtMatrix[index];
+    };
+
+    nullify(12);
+    this.matrix[12] += brt.blue;
+    this._brtMatrix[12] = brt.blue;
+  }
+
+  // Con
+
+  public updateCon(con: Colors): void {
+    this.mem.compareCon(con);
+  }
+
+  private updateConRed(con: Colors): void {
+    const v = con.red + 1;
+    const o = -0.5 * (v - 1);
+
+    const nullify = index => {
+      this.matrix[index] -= this._conMatrix[index];
+    };
+
+    nullify(0);
+    this.matrix[0] += v;
+    this._conMatrix[0] = v;
+
+    nullify(4);
+    this.matrix[4] += o;
+    this._conMatrix[4] = o;
+  }
+
+  private updateConGreen(con: Colors): void {
+    const v = con.green + 1;
+    const o = -0.5 * (v - 1);
+
+    const nullify = index => {
+      this.matrix[index] -= this._conMatrix[index];
+    };
+
+    nullify(6);
+    this.matrix[6] += v;
+    this._conMatrix[6] = v;
+
+    nullify(9);
+    this.matrix[9] += o;
+    this._conMatrix[9] = o;
+  }
+
+  private updateConBlue(con: Colors): void {
+    const v = con.blue + 1;
+    const o = -0.5 * (v - 1);
+
+    const nullify = index => {
+      this.matrix[index] -= this._conMatrix[index];
+    };
+
+    nullify(12);
+    this.matrix[12] += v;
+    this._conMatrix[12] = v;
+
+    nullify(14);
+    this.matrix[14] += o;
+    this._conMatrix[14] = o;
+  }
+
   /**
    * Initialize the matrix with these starting values
    * @param hue Degrees from 0 - 360
    * @param sat Value starting 1 and to any direction
-   * @param brt Not quite sure
+   * @param brt Value starting 1 and to any direction
    * @param con Not quire sure
    */
-  public init(hue: Colors, sat: Colors, brt, con) {
+  public init(hue: Colors, sat: Colors, brt: Colors, con: Colors) {
     this.mem.initHue(hue);
     this.mem.initSat(sat);
+    this.mem.initBrt(brt);
+    this.mem.initCon(con);
   }
 }
