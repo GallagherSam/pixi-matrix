@@ -56,6 +56,28 @@ export class HomeComponent implements OnInit {
       transparent: true
     });
     this.pixiContainer.nativeElement.appendChild(this.app.view);
+
+    // Initalize the matrix
+    this.matrixService.init({ red: 0, green: 0, blue: 0 }, {}, {}, {});
+
+    // Interval to update matrix
+    setInterval(() => {
+      console.log("tick");
+      this.matrixService.updateHue({red: this._redHue, green: this._greenHue, blue: this._blueHue});
+      console.log(this.matrixService.matrix);
+    }, 25);
+
+    // DEV
+    setTimeout(() => {
+      this._redHue = 180;
+      this._greenHue = 180;
+      this._blueHue = 180;
+    }, 250);
+    setTimeout(() => {
+      this._redHue = 0;
+      this._greenHue = 0;
+      this._blueHue = 0;
+    }, 1000);
   }
 
   public toggle(attr: string, value?: any): void {
@@ -179,23 +201,18 @@ export class HomeComponent implements OnInit {
         this[key] = value;
       }
     });
-
-    this.matrixService.updateHue(this.redHue, this.greenHue, this.blueHue);
   }
 
   public set redHue(value: number) {
     this._redHue = value;
-    this.matrixService.updateHue(this.redHue, this.greenHue, this.blueHue);
   }
 
   public set greenHue(value: number) {
     this._greenHue = value;
-    this.matrixService.updateHue(this.redHue, this.greenHue, this.blueHue);
   }
 
   public set blueHue(value: number) {
     this._blueHue = value;
-    this.matrixService.updateHue(this.redHue, this.greenHue, this.blueHue);
   }
 
   public set masterSat(value: number) {
@@ -206,8 +223,6 @@ export class HomeComponent implements OnInit {
         this[key] = value;
       }
     });
-
-    this.matrixService.updateSat(this.redSat, this.greenSat, this.blueSat);
   }
 
   public set redSat(value: number) {

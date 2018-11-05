@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { MatrixService } from './services/matrix.service';
+import { MemoryService } from './services/memory.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,7 @@ import { MatrixService } from './services/matrix.service';
     AppRoutingModule,
     FormsModule
   ],
-  providers: [MatrixService],
+  providers: [MatrixService, MemoryService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
