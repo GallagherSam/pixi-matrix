@@ -27,27 +27,24 @@ export class PixiService {
   }
 
   private standardView() {
-    const height = this.car.height;
-    const width = this.car.width;
-
-    const point = {
-      x: 800 / 2 - width / 2,
-      y: 800 / 2 - height / 2
-    };
-
     if (this.car) {
-      this.car.position = point;
-    }
+      const height = this.car.height;
+      const width = this.car.width;
 
-    if (this.overlay) {
-      this.overlay.position = point;
+      const point = {
+        x: 800 / 2 - width / 2,
+        y: 800 / 2 - height / 2
+      };
+      this.car.position = point;
+
+      if (this.overlay) {
+        this.overlay.position = point;
+      }
     }
 
     if (this.comparision) {
       this.comparision.alpha = 0;
     }
-
-    console.log(this.car);
   }
 
   private comparisionView() {
