@@ -131,8 +131,6 @@ export class MatrixService {
 
   constructor(private mem: MemoryService) {
     this.mem.events.subscribe((event: MemoryMessage) => {
-      console.log(event);
-
       if (event.prop === IProp.HUE) {
         if (event.color === IColors.RED) {
           this.updateHueRed(this.mem.hue);

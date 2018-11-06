@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatrixService } from '../services/matrix.service';
+import { PixiService } from '../services/pixi.service';
+import { View } from '../enums/view.enum';
 
 declare var PIXI: any;
 
@@ -71,15 +73,13 @@ export class HomeComponent implements OnInit {
   public outputExpanded = true;
   public sidenavState = false;
 
-  constructor(public matrixService: MatrixService) {}
+  constructor(
+    public matrixService: MatrixService,
+    public pixiService: PixiService
+  ) {}
 
   ngOnInit() {
-    this.app = new PIXI.Application({
-      width: 800,
-      height: 800,
-      transparent: true
-    });
-    this.pixiContainer.nativeElement.appendChild(this.app.view);
+    this.pixiService.initPixi(this.pixiContainer);
 
     // Initalize the matrix
     this.matrixService.init(
@@ -91,7 +91,6 @@ export class HomeComponent implements OnInit {
 
     // Interval to update matrix
     setInterval(() => {
-      console.log('tick');
       this.matrixService.updateHue({
         red: this._redHue,
         green: this._greenHue,
@@ -112,7 +111,6 @@ export class HomeComponent implements OnInit {
         green: this._greenCon,
         blue: this._blueCon
       });
-      console.log(this.matrixService.matrix);
     }, 100);
   }
 
@@ -122,46 +120,15 @@ export class HomeComponent implements OnInit {
     } else {
       this[attr] = !this[attr];
     }
-  }
 
-  // PIXI functions
-  private setupScene(e): void {
-    const loader = PIXI.loader;
-    const img = new Image();
-    img.src = e.target.result;
-
-    const baseTex = new PIXI.BaseTexture(img);
-    const tex = new PIXI.Texture(baseTex);
-    PIXI.Texture.addToCache(tex, 'sprite');
-
-    this.sprite = PIXI.Sprite.fromImage('sprite');
-    this.sprite.scale.set(0.5, 0.5);
-
-    this.app.stage.addChild(this.sprite);
-    this.startTicker();
-  }
-
-  private startTicker(): void {
-    this.app.ticker.add(d => {
-      const colorMatrix = new PIXI.filters.ColorMatrixFilter();
-      colorMatrix.matrix = this.matrixService.matrix;
-      this.sprite.filters = [colorMatrix];
-    });
-  }
-
-  private addOverlayImage(e): void {
-    const loader = PIXI.loader;
-    const img = new Image();
-    img.src = e.target.result;
-
-    const baseTex = new PIXI.BaseTexture(img);
-    const tex = new PIXI.Texture(baseTex);
-    PIXI.Texture.addToCache(tex, 'overlay');
-
-    const overlay = PIXI.Sprite.fromImage('overlay');
-    overlay.scale.set(0.5, 0.5);
-
-    this.app.stage.addChild(overlay);
+    // View specific functionality
+    if (attr === 'viewState') {
+      if (value === 'standard') {
+        this.pixiService.viewChange$.next(View.STANDARD);
+      } else {
+        this.pixiService.viewChange$.next(View.COMPARISION);
+      }
+    }
   }
 
   // Sidebar Functions
@@ -174,8 +141,7 @@ export class HomeComponent implements OnInit {
   public chooseSpriteImageListener(ev): void {
     const reader = new FileReader();
     reader.onload = e => {
-      console.log('loaded');
-      this.setupScene(e);
+      this.pixiService.loadCarBase(e);
     };
     reader.readAsDataURL(ev.target.files[0]);
   }
@@ -189,8 +155,21 @@ export class HomeComponent implements OnInit {
   public chooseOverlayImageListener(ev): void {
     const reader = new FileReader();
     reader.onload = e => {
-      console.log('loaded');
-      this.addOverlayImage(e);
+      this.pixiService.loadCarOverlay(e);
+    };
+    reader.readAsDataURL(ev.target.files[0]);
+  }
+
+  public chooseComparisionImage(): void {
+    const element = document.getElementById('comparisionInput');
+    element.click();
+    this.sidenavState = false;
+  }
+
+  public chooseComparisionImageListener(ev): void {
+    const reader = new FileReader();
+    reader.onload = e => {
+      this.pixiService.loadComparision(e);
     };
     reader.readAsDataURL(ev.target.files[0]);
   }
