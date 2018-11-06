@@ -27,7 +27,27 @@ export class PixiService {
   }
 
   private standardView() {
-    this.comparision.alpha = 0;
+    const height = this.car.height;
+    const width = this.car.width;
+
+    const point = {
+      x: 800 / 2 - width / 2,
+      y: 800 / 2 - height / 2
+    };
+
+    if (this.car) {
+      this.car.position = point;
+    }
+
+    if (this.overlay) {
+      this.overlay.position = point;
+    }
+
+    if (this.comparision) {
+      this.comparision.alpha = 0;
+    }
+
+    console.log(this.car);
   }
 
   private comparisionView() {
@@ -36,16 +56,25 @@ export class PixiService {
       x: 0,
       y: 0
     };
-    this.car.position = topPoint;
-    this.overlay.position = topPoint;
+
+    if (this.car) {
+      this.car.position = topPoint;
+    }
+
+    if (this.overlay) {
+      this.overlay.position = topPoint;
+    }
 
     // Move the comparision to the bottom
     const bottomPoint = {
       x: 0,
       y: 400
     };
-    this.comparision.position = bottomPoint;
-    this.comparision.alpha = 1;
+
+    if (this.comparision) {
+      this.comparision.position = bottomPoint;
+      this.comparision.alpha = 1;
+    }
   }
 
   public initPixi(element: any): void {
