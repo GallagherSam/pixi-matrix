@@ -167,6 +167,10 @@ export class MatrixService {
     });
   }
 
+  public resetMatrix(): void {
+    this.matrix = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0];
+  }
+
   // Hue
   public updateHue(hue: Colors): void {
     this.mem.compareHue(hue);

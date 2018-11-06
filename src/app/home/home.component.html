@@ -215,7 +215,8 @@
                     <input [value]="matrixService.matrix[19]" type="text">
                 </div>
                 <div class="button-container">
-                    <button>Download JSON</button>
+                    <button (click)="resetMatrix()">Reset Matrix</button>
+                    <button (click)="downloadMatrix()">Download JSON</button>
                 </div>
                 <div (click)="toggle('outputExpanded')" [ngClass]="{'collapsed': !outputExpanded}" class="arrow"></div>
             </div>
@@ -230,4 +231,5 @@
     <input id="spriteInput" (change)="chooseSpriteImageListener($event)" type="file">
     <input id="overlayInput" (change)="chooseOverlayImageListener($event)" type="file">
     <input id="comparisionInput" (change)="chooseComparisionImageListener($event)" type="file">
+    <a id="downloadAnchorElem" style="display:none"></a>
 </div>

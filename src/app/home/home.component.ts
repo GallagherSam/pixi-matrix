@@ -131,6 +131,58 @@ export class HomeComponent implements OnInit {
     }
   }
 
+  public resetMatrix(): void {
+    this.masterHue = 0;
+    this.masterSat = 0;
+    this.masterBrt = 0;
+    this.masterCon = 0;
+
+    const reset = item => {
+      Object.keys(item).forEach(key => {
+        this[key] = 0;
+      });
+    };
+
+    reset(this.hueOverrides);
+    reset(this.satOverrides);
+    reset(this.brtOverrides);
+    reset(this.conOverrides);
+
+    this.matrixService.resetMatrix();
+  }
+
+  public downloadMatrix(): void {
+    const obj = {
+      hue: {
+        red: this.redHue,
+        green: this.greenHue,
+        blue: this.blueHue
+      },
+      sat: {
+        red: this.redSat,
+        green: this.greenSat,
+        blue: this.blueSat
+      },
+      brt: {
+        red: this.redBrt,
+        green: this.greenBrt,
+        blue: this.blueBrt
+      },
+      con: {
+        red: this.redCon,
+        green: this.greenCon,
+        blue: this.blueCon
+      },
+      matrix: this.matrixService.matrix
+    };
+    const dataStr =
+      'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(obj));
+    const elm = document.getElementById('downloadAnchorElem');
+    elm.setAttribute('href', dataStr);
+    elm.setAttribute('download', 'matrix.json');
+    elm.click();
+  }
+
   // Sidebar Functions
   public chooseSpriteImage(): void {
     const element = document.getElementById('spriteInput');
